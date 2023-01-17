@@ -20,7 +20,7 @@ function! ctrlp_kensaku#matcher(items, str, limit, mmode, ispath, crfile, regex)
       let s:timer = timer_start(10, {t ->
       \ [clearmatches(), matchadd('CtrlPMatch', l:regex_query), hlexists('CtrlPLinePre') ? matchadd('CtrlPLinePre', '^>') : '', execute('redraw')]
       \}, {'repeat': 0})
-    catch /:E\%(872\):/
+    catch /:E\%(871\|872\):/
       return filter(copy(a:items), 'v:val =~ a:str')
       "call writefile(['E872', v:exception], 'kensaku.log', 'as')
       "call writefile([l:regex_query], 'kensaku.log', 'as')
