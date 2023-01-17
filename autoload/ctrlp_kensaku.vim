@@ -19,6 +19,15 @@ function! ctrlp_kensaku#matcher(items, str, limit, mmode, ispath, crfile, regex)
     "\ [clearmatches(), matchadd('CtrlPMatch', l:regex_query), hlexists('CtrlPLinePre') ? matchadd('CtrlPLinePre', '^>') : '', execute('redraw')]
     "\}, {'repeat': 0})
 
-    return filter(copy(a:items), s:evalfngen(l:regex_query))
+    try
+      let l:filtereditems = filter(copy(a:items), s:evalfngen(l:regex_query))
+    catch /:E\%(872\):/
+      return filter(copy(a:items), 'v:val =~ a:str')
+      "call writefile(['E872', v:exception], 'kensaku.log', 'as')
+      "call writefile([l:regex_query], 'kensaku.log', 'as')
+      "return copy(a:items)
+    endtry
+    return l:filtereditems
+
   endif
 endfunction
