@@ -14,13 +14,12 @@ function! ctrlp_kensaku#matcher(items, str, limit, mmode, ispath, crfile, regex)
     return filter(a:items, 'v:val =~ a:str')
   else
     let l:regex_query = "\\v" .. kensaku#query(a:str)
-    "call timer_stop(s:timer)
-    "let s:timer = timer_start(10, {t ->
-    "\ [clearmatches(), matchadd('CtrlPMatch', l:regex_query), hlexists('CtrlPLinePre') ? matchadd('CtrlPLinePre', '^>') : '', execute('redraw')]
-    "\}, {'repeat': 0})
-
+    call timer_stop(s:timer)
     try
       let l:filtereditems = filter(copy(a:items), s:evalfngen(l:regex_query))
+      let s:timer = timer_start(10, {t ->
+      \ [clearmatches(), matchadd('CtrlPMatch', l:regex_query), hlexists('CtrlPLinePre') ? matchadd('CtrlPLinePre', '^>') : '', execute('redraw')]
+      \}, {'repeat': 0})
     catch /:E\%(872\):/
       return filter(copy(a:items), 'v:val =~ a:str')
       "call writefile(['E872', v:exception], 'kensaku.log', 'as')
