@@ -24,7 +24,8 @@ function! ctrlp_kensaku#matcher(items, str, limit, mmode, ispath, crfile, regex)
         call extend(l:regex_queries, [l:regex_queries[-1] .. '.*' .. l:regex_q])
       endif
     endfor
-    let l:regex_queries = reverse(map(l:regex_queries, '"\\v" .. v:val'))
+    "let l:regex_queries = reverse(map(l:regex_queries, '"\\v" .. v:val'))
+    let l:regex_queries = reverse(l:regex_queries)
     call timer_stop(s:timer)
     for q in l:regex_queries
       try
